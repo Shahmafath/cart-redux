@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Badge, Container, Nav, Navbar } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { productSearch } from '../redux/slices/productSlice'
 
 
-function Header() {
+function Header({insideHome}) {
 
+  const dispatch = useDispatch()
   const [wishlistCount, setWishlistCount] = useState(0)
   const [cartCount, setCartCount] = useState(0)
   const wishlist = useSelector(state => state.wishlistSlice.wishlist)
@@ -29,6 +31,12 @@ function Header() {
       <Navbar.Toggle aria-controls='basic-navbar-nav'/>
       <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
+           {
+           insideHome&& 
+              <Nav.Link className='me-lg-5'>
+              <input onChange={e => dispatch(productSearch(e.target.value.toLowerCase()))} type="text" className='form-control' placeholder='Search products!' style={{width: '400px'}} />
+            </Nav.Link> 
+           }
             <Nav.Link className='btn border rounded'>
               <Link to={'/wishlist'} className='d-flex align-items-center' style={{textDecoration: 'none', color: 'white', fontWeight: 'bold'}}>
                 <i className='fa-solid fa-heart text-light me-2'></i>
